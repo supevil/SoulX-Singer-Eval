@@ -73,8 +73,6 @@ GMO-SVS is built upon three public SVS corpora: **G**TSinger, **M**4Singer, and 
 
 For each song, the first sentence is used as the acoustic prompt, and the remaining content is synthesized by evaluated models. Ground-truth recordings of the prompt singers are preserved to evaluate pronunciation accuracy, prosodic consistency, and overall synthesis quality. None of these open-source datasets are used in SoulX-Singer training, ensuring fair evaluation.
 
-To assess singing voice editing, we also provide modified lyrics: original lyrics are rewritten by the DeepSeek-V LLM while strictly keeping the same word count, enabling evaluation of lyric edits under fixed melody and expression.
-
 ### SoulX-Singer-Eval
 
 SoulX-Singer-Eval is a newly collected dataset for zero-shot generalization on unseen speakers. It contains **100 singing segments** from **50 distinct individuals** (25 Mandarin and 25 English speakers), with **2 segments per speaker**. Mandarin data are collected from recruited professional and amateur singers who consented to open-source their voice data for academic purposes. English segments are sliced and filtered from the multitrack *Mixing Secrets* dataset. All segments are manually annotated with precise melody to meet prompt requirements for zero-shot SVS models.
