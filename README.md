@@ -4,9 +4,9 @@
 		Evaluation suite for zero-shot Singing Voice Synthesis (SVS) systems, covering aesthetic appeal, signal quality, pronunciation accuracy, speaker similarity, and melodic precision.
 	</p>
 	<p>
-		<a href="https://huggingface.co/datasets/Soul-AILab/SoulX-Singer-Eval-Dataset"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Eval--Dataset-Hugging%20Face-ffda16" alt="Eval Dataset"></a>
-		<a href="https://arxiv.org/abs/2602.07803"><img src="https://img.shields.io/badge/arXiv-2602.07803-b31b1b" alt="SoulX-Singer arXiv"></a>
-		<a href="https://github.com/Soul-AILab/SoulX-Singer"><img src="https://img.shields.io/badge/SoulX--Singer-Repository-black" alt="SoulX-Singer Repo"></a>
+		<a href="https://huggingface.co/datasets/Soul-AILab/SoulX-Singer-Eval-Dataset"><img src="https://img.shields.io/badge/Eval--Dataset-Hugging%20Face-ffda16?logo=huggingface&logoColor=ffda16&labelColor=2b2b2b" alt="Eval Dataset"></a>
+		<a href="https://arxiv.org/abs/2602.07803"><img src="https://img.shields.io/badge/arXiv-2602.07803-b31b1b?logo=arxiv&logoColor=fff" alt="SoulX-Singer arXiv"></a>
+		<a href="https://github.com/Soul-AILab/SoulX-Singer"><img src="https://img.shields.io/badge/SoulX--Singer-Repository-181717?logo=github&logoColor=fff" alt="SoulX-Singer Repo"></a>
 	</p>
 </div>
 
